@@ -28,13 +28,25 @@ var passwordProps = {};
     passwordProps.length = parseInt(getPasswordLength());
     console.log("password length: " + passwordProps.length)
 
+    // WHEN prompted for character types to include in the password
+    // THEN I choose lowercase, uppercase, numeric, and/or special characters
     password.hasLowerCaseChar = hasLowerCaseChar();
     console.log("has lower case chars: " + password.hasLowerCaseChar);
 
+    // THEN I choose uppercase
+    password.hasUpperCaseChar = hasUpperCaseChar();
+    console.log("has upper case chars: " + password.hasUpperCaseChar);
+
+    // THEN I choose numeric
+    password.hasNumericValues = hasNumericValues();
+    console.log("has numeric values: " + password.hasNumericValues);
+      
+    // THEN I choose and/or special characters
+    password.hasSpecialChars = hasSpecialChars();
+    console.log("has special characters: " + password.hasSpecialChars);
   }
 
-// WHEN prompted for character types to include in the password
-// THEN I choose lowercase, uppercase, numeric, and/or special characters
+
 // WHEN I answer each prompt
 // THEN my input should be validated and at least one character type should be selected
 // WHEN all prompts are answered
@@ -62,3 +74,26 @@ function hasLowerCaseChar() {
   else return lCaseChar;
 }
 
+function hasUpperCaseChar() {
+  var uCaseChar = prompt("Should the password have uppercase characters? Type Yes or No.").toUpperCase();
+  if ((uCaseChar !== "YES") && (uCaseChar !== "NO")) {
+    hasUpperCaseChar();
+  }
+  else return uCaseChar;
+}
+
+function hasNumericValues() {
+  var numValues = prompt("Should the password have numeric values? Type Yes or No.").toUpperCase();
+  if ((numValues !== "YES") && (numValues !== "NO")) {
+    hasNumericValues();
+  }
+  else return numValues;
+}
+
+function hasSpecialChars() {
+  var splChar = prompt("Should the password have special characters? Type Yes or No.").toUpperCase();
+  if ((splChar !== "YES") && (splChar !== "NO")) {
+    hasSpecialChars();
+  }
+  else return splChar;
+}
