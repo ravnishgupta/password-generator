@@ -125,22 +125,33 @@ function checkPasswordProps() {
 function setPassword() {
   var thePassword = '';
   var passwordLength = passwordProps["length"];
+  var myFunctions = ["generateValue(1, \"CHAR\").toLowerCase()", "generateValue(1, \"CHAR\").toUpperCase()", "generateValue(1, \"NUMBER\").toLowerCase()", "generateValue(1, \"SPECIALCHARS\")"];
+  
+  for (var f=0; f<myFunctions.length; f++) {
+    console.log(myFunctions[f]);
+  }
+
   if (passwordProps["hasLowerCaseChar"] === "YES") {
-    console.log(generateValue(1, "CHAR").toLowerCase());
+    thePassword += generateValue(1, "CHAR").toLowerCase();
+    passwordLength -= 1;
   }
 
   if (passwordProps["hasUpperCaseChar"] === "YES") {
-    console.log(generateValue(1, "CHAR").toUpperCase());
+    thePassword += generateValue(1, "CHAR").toUpperCase();
+    passwordLength -= 1;
   }
 
   if (passwordProps["hasNumericValues"] === "YES") {
-    console.log(generateValue(1, "NUMBER"));
+    thePassword += generateValue(1, "NUMBER");
+    passwordLength -= 1;
 
   }
-
+  
   if (passwordProps["hasSpecialChars"] === "YES") {
-
+    thePassword += generateValue(1, "SPECIALCHARS");
+    passwordLength -= 1;
   }
+  console.log(thePassword, passwordLength);
 
 }
 
@@ -149,25 +160,31 @@ function setPassword() {
 function generateValue(length, type) {
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const numbers = "0123456789";
-  //const specialChars = ""~!@#$%^&*()_+-=[]\{}|;:'",./<>?""
+  const specialChars = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "+", "[", "]", "~", "`", "{" , "}", "|", "\\", ":", ";", "'", "\"", "<", ",", ".", ">", "?", "/"];
+
     let result = "";
     switch (type.toUpperCase()) {
       case "CHAR":
         const charactersLength = characters.length;
-        for (i = 0; i < length; i++) {
-          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        for (var i = 0; i < length; i++) {
+          result = characters.charAt(Math.floor(Math.random() * charactersLength));
         }
         break;
       case "NUMBER":
         const numberLength = numbers.length;
-        for (i = 0; i < length; i++) {
-          result += numbers.charAt(Math.floor(Math.random() * numberLength));
+        for (var i = 0; i < length; i++) {
+          result = numbers.charAt(Math.floor(Math.random() * numberLength));
         }
         break;
       case "SPECIALCHARS":
+        const splCharLength = specialChars.length;
+        for (var i = 0; i < length; i++) {
+          result = specialChars[Math.floor(Math.random() * splCharLength)];
+        }
         break;
     }
-    return result.substring(0, length);
+    return result;
+    //return result.substring(0, length);
 }
 
 //console.log(generateString(5));
