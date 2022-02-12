@@ -25,12 +25,14 @@ function generatePassword() {
   if (confirm("Please answer the following prompts in order to generate your password.")) { 
     setPasswordProps();
     while (!checkPasswordProps()) {
-      debugger;
       alert("Please select at least one character type. Let's start again.");
       setPasswordProps();
     }  
   }
-  setPassword();
+  //setPassword();
+  var passwordArray = setPasswordChars();
+  console.log(passwordArray[0], passwordArray[1]);
+  //console.log()
 }
 
 function getPasswordLength() {
@@ -122,7 +124,7 @@ function checkPasswordProps() {
   return allClear;
 }
 
-function setPassword() {
+function setPasswordChars() {
   var thePassword = '';
   var passwordLength = passwordProps["length"];
   var myFunctions = ["generateValue(1, \"CHAR\").toLowerCase()", "generateValue(1, \"CHAR\").toUpperCase()", "generateValue(1, \"NUMBER\").toLowerCase()", "generateValue(1, \"SPECIALCHARS\")"];
@@ -151,7 +153,11 @@ function setPassword() {
     thePassword += generateValue(1, "SPECIALCHARS");
     passwordLength -= 1;
   }
-  console.log(thePassword, passwordLength);
+   return [thePassword, passwordLength];
+
+}
+
+function setRemainingPasswordChars() {
 
 }
 
@@ -184,7 +190,4 @@ function generateValue(length, type) {
         break;
     }
     return result;
-    //return result.substring(0, length);
 }
-
-//console.log(generateString(5));
