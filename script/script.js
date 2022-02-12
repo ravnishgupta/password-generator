@@ -22,46 +22,18 @@ function generatePassword() {
 // WHEN prompted for password criteria
 // THEN I select which criteria to include in the password
 
-  if (confirm("Please answer the following prompts in order to generate your password.")) {
-
-    // WHEN prompted for the length of the password
-    // THEN I choose a length of at least 8 characters and no more than 128 characters  
-    passwordProps["length"] = parseInt(getPasswordLength());
-    //passwordProps.length = parseInt(getPasswordLength());
-    //console.log("password length: " + passwordProps.length)
-
-    // WHEN prompted for character types to include in the password
-    // THEN I choose lowercase, uppercase, numeric, and/or special characters
-    passwordProps["hasLowerCaseChar"] = hasLowerCaseChar().toUpperCase();
-    // console.log("has lower case chars: " + password.hasLowerCaseChar);
-
-    // // THEN I choose uppercase
-    passwordProps["hasUpperCaseChar"] = hasUpperCaseChar().toUpperCase();
-    // console.log("has upper case chars: " + password.hasUpperCaseChar);
-
-    // // THEN I choose numeric
-    passwordProps["hasNumericValues"] = hasNumericValues().toUpperCase();
-    // console.log("has numeric values: " + password.hasNumericValues);
-      
-    // // THEN I choose and/or special characters
-    passwordProps["hasSpecialChars"] = hasSpecialChars().toUpperCase();
-    // console.log("has special characters: " + password.hasSpecialChars);
-
-    console.log(passwordProps);
+  if (confirm("Please answer the following prompts in order to generate your password.")) { 
+    setPasswordProps();
+    while (!checkPasswordProps()) {
+      debugger;
+      alert("Please select at least one character type. Let's start again.");
+      setPasswordProps();
+    }  
   }
-
-
-// WHEN I answer each prompt
-// THEN my input should be validated and at least one character type should be selected
-// WHEN all prompts are answered
-// THEN a password is generated that matches the selected criteria
-// WHEN the password is generated
-//return passwordProps.length;
-
+  setPassword();
 }
 
 function getPasswordLength() {
-  //debugger;
   var input = prompt("Please enter the length of the desired password. The value should be between 8 and 128.");
   if ((input === null) || (input === "")) {
     return getPasswordLength();
@@ -116,3 +88,86 @@ function hasSpecialChars() {
   }
   else return splChar;
 }
+
+function setPasswordProps() {
+  passwordProps = {};
+
+  // WHEN prompted for the length of the password
+  // THEN I choose a length of at least 8 characters and no more than 128 characters 
+  passwordProps["length"] = parseInt(getPasswordLength());
+
+  // WHEN prompted for character types to include in the password
+  // THEN I choose lowercase, uppercase, numeric, and/or special characters
+  passwordProps["hasLowerCaseChar"] = hasLowerCaseChar().toUpperCase();
+
+  // THEN I choose uppercase
+  passwordProps["hasUpperCaseChar"] = hasUpperCaseChar().toUpperCase();
+
+  // THEN I choose numeric
+  passwordProps["hasNumericValues"] = hasNumericValues().toUpperCase();
+    
+  // THEN I choose and/or special characters
+  passwordProps["hasSpecialChars"] = hasSpecialChars().toUpperCase();
+
+}
+
+function checkPasswordProps() {
+  var allClear = true;
+  if ((passwordProps["hasLowerCaseChar"] === "NO") && 
+      (passwordProps["hasUpperCaseChar"] === "NO") && 
+      (passwordProps["hasNumericValues"] === "NO") && 
+      (passwordProps["hasSpecialChars"] === "NO")) {
+        allClear = false;
+  }
+  return allClear;
+}
+
+function setPassword() {
+  var thePassword = '';
+  var passwordLength = passwordProps["length"];
+  if (passwordProps["hasLowerCaseChar"] === "YES") {
+    console.log(generateValue(1, "CHAR").toLowerCase());
+  }
+
+  if (passwordProps["hasUpperCaseChar"] === "YES") {
+    console.log(generateValue(1, "CHAR").toUpperCase());
+  }
+
+  if (passwordProps["hasNumericValues"] === "YES") {
+    console.log(generateValue(1, "NUMBER"));
+
+  }
+
+  if (passwordProps["hasSpecialChars"] === "YES") {
+
+  }
+
+}
+
+
+
+function generateValue(length, type) {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const numbers = "0123456789";
+  //const specialChars = ""~!@#$%^&*()_+-=[]\{}|;:'",./<>?""
+    let result = "";
+    switch (type.toUpperCase()) {
+      case "CHAR":
+        const charactersLength = characters.length;
+        for (i = 0; i < length; i++) {
+          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        break;
+      case "NUMBER":
+        const numberLength = numbers.length;
+        for (i = 0; i < length; i++) {
+          result += numbers.charAt(Math.floor(Math.random() * numberLength));
+        }
+        break;
+      case "SPECIALCHARS":
+        break;
+    }
+    return result.substring(0, length);
+}
+
+//console.log(generateString(5));
