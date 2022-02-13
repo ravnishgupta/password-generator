@@ -55,7 +55,7 @@ function setRemainingPasswordChars(length) {
 }
 ```
 
-## :point_right:  Github link to the deployed application: [https://ravnishgupta.github.io/password-generator/](url)
+## :point_right:  Github [link](https://ravnishgupta.github.io/password-generator/) to the deployed application
 
 
 
