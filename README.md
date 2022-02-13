@@ -1,4 +1,5 @@
 # Password Generator
+![Image](./assets/images/password-gen.png "Password Generator")
 
 ## Overview
 
@@ -16,40 +17,48 @@ This JS code prompts the user to:
 
 ## :point_right: Randomizing function calls  
 The code uses Math.random() method to randomize function calls. The functions are included in an array.
-> 		var myFunctions = ['generateValue("LCASECHAR")', 'generateValue("UCASECHAR")', 'generateValue("NUMBER")', 'generateValue("SPECIALCHARS")'];
+ 
+`var myFunctions = ['generateValue("LCASECHAR")', 'generateValue("UCASECHAR")', 'generateValue("NUMBER")', 'generateValue("SPECIALCHARS")'];`
 
 In the snippet below, function calls are randomized
->		tempValue = eval(myFunctions[Math.floor(Math.random() * myFunctions.length)]);
+
+`tempValue = eval(myFunctions[Math.floor(Math.random() * myFunctions.length)]);`
 
 ### Adhering to user selections
 The password will only be generated based on what the user has decided to include. 
 In the snippet below, code will ensure the above
->		function setRemainingPasswordChars(length) {
-> 				var value = '';
->     		//check if the value confirms to the user's input
->     		//if not, then keep retrying
->     		tempValue = eval(myFunctions[Math.floor(Math.random() * myFunctions.length)]);
->     		if ((passwordProps["hasUpperCaseChar"] === "NO") && (characters.includes(tempValue))){
->         			i--;
->     		}
->     		else if ((passwordProps["hasLowerCaseChar"] === "NO") && (characters.toLowerCase().includes(tempValue))){
->         			i--;
->     		}
->     		else if ((passwordProps["hasNumericValues"] === "NO") && (numbers.toLowerCase().includes(tempValue))){
->         			i--;
->     		}
->     		else if ((passwordProps["hasSpecialChars"] === "NO") && (specialChars.indexOf(tempValue)>-1)){
->     		    	i--;
->     		}		
->     		else {
->        			value += tempValue;
->     		}
->   		}
->   		return value;
-> 		}
+
+```
+function setRemainingPasswordChars(length) {
+  var value = '';
+
+  //check if the value confirms to the user's input
+  //if not, then keep retrying
+
+  tempValue = eval(myFunctions[Math.floor(Math.random() * myFunctions.length)]);
+
+  if ((passwordProps["hasUpperCaseChar"] === "NO") && (characters.includes(tempValue))){
+    i--;
+  }
+  else if ((passwordProps["hasLowerCaseChar"] === "NO") && (characters.toLowerCase().includes(tempValue))){
+    i--;
+  }
+  else if ((passwordProps["hasNumericValues"] === "NO") && (numbers.toLowerCase().includes(tempValue))){
+    i--;
+  }
+  else if ((passwordProps["hasSpecialChars"] === "NO") && (specialChars.indexOf(tempValue)>-1)){
+    i--;
+  }		
+  else {
+    value += tempValue;
+  }
+  return value;
+}
+```
+
 ## :point_right:  Github link to the repo: [https://github.com/ravnishgupta/password-generator](url)
 
-![Image](./assets/images/password-gen.png "title")
+
 
 
 
