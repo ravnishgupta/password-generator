@@ -2,7 +2,6 @@
 ![Image](./assets/images/password-gen.png "Password Generator")
 
 ## Overview
-
 This JS code prompts the user to:
 - Enter the length of their desired password (between 8 and 128)
 - Select whether they want to include:
@@ -24,7 +23,7 @@ In the snippet below, function calls are randomized
 
 `tempValue = eval(myFunctions[Math.floor(Math.random() * myFunctions.length)]);`
 
-### Adhering to user selections
+## :point_right: Conforming to user selections
 The password will only be generated based on what the user has decided to include. 
 In the snippet below, code will ensure the above
 
@@ -56,7 +55,7 @@ function setRemainingPasswordChars(length) {
 }
 ```
 
-## :point_right:  Github link to the repo: [https://github.com/ravnishgupta/password-generator](url)
+## :point_right:  Github link to the deployed application: [https://ravnishgupta.github.io/password-generator/](url)
 
 
 
