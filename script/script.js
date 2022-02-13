@@ -1,9 +1,14 @@
-// Assignment Code
+// Global variables
 var generateBtn = document.querySelector("#generate");
 var passwordProps = {};
+const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const numbers = "0123456789";
+const specialChars = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "+", "[", "]", "~", "`", "{" , "}", "|", "\\", ":", ";", "'", "\"", "<", ",", ".", ">", "?", "\/"];
 
-//add comment after successful completion
-var myFunctions = ['generateValue(1, "LCASECHAR")', 'generateValue(1, "UCASECHAR")', 'generateValue(1, "NUMBER")', 'generateValue(1, "SPECIALCHARS")'];
+//This array contains all the functions that will be used to generate the password
+//Afer generating the initial character, random values will be selected from this array
+//and since these are functions, eval will be used to execute them
+var myFunctions = ['generateValue("LCASECHAR")', 'generateValue("UCASECHAR")', 'generateValue("NUMBER")', 'generateValue("SPECIALCHARS")'];
 
 // Write password to the #password input
 function writePassword() {
@@ -44,9 +49,11 @@ function generatePassword() {
 
 function getPasswordLength() {
   var input = prompt("Please enter the length of the desired password. The value should be between 8 and 128.");
+  //if user presses OK or Cancel button
   if ((input === null) || (input === "")) {
     return getPasswordLength();
   }
+  //users needs to enter a number between 8 and 128
   else if ((input !== null) && ((parseInt(input) < 8) || (parseInt(input) > 128) || (isNaN(parseInt(input))))) {
     return getPasswordLength();
   }
@@ -56,9 +63,11 @@ function getPasswordLength() {
 
 function hasLowerCaseChar() {
   var lCaseChar = prompt("Should the password have lowercase characters? Type Yes or No.");
+  //if user presses OK or Cancel button
   if ((lCaseChar === null) || (lCaseChar === "")) {
     return hasLowerCaseChar();
   }
+  //if user types in any other input
   else if ((lCaseChar.toUpperCase() !== "YES") && (lCaseChar.toUpperCase() !== "NO")) {
     return hasLowerCaseChar();
   }
@@ -67,9 +76,11 @@ function hasLowerCaseChar() {
 
 function hasUpperCaseChar() {
   var uCaseChar = prompt("Should the password have uppercase characters? Type Yes or No.");
+  //if user presses OK or Cancel button
   if ((uCaseChar === null) || (uCaseChar === "")) {
     return hasUpperCaseChar();
   }
+  //if user types in any other input
   else if ((uCaseChar.toUpperCase() !== "YES") && (uCaseChar.toUpperCase() !== "NO")) {
     return hasUpperCaseChar();
   }
@@ -78,9 +89,11 @@ function hasUpperCaseChar() {
 
 function hasNumericValues() {
   var numValues = prompt("Should the password have numeric values? Type Yes or No.");
+  //if user presses OK or Cancel button
   if ((numValues === null) || (numValues === "")) {
     return hasNumericValues();
   }
+  //if user types in any other input
   else if ((numValues.toUpperCase() !== "YES") && (numValues.toUpperCase() !== "NO")) {
     return hasNumericValues();
   }
@@ -89,9 +102,11 @@ function hasNumericValues() {
 
 function hasSpecialChars() {
   var splChar = prompt("Should the password have special characters? Type Yes or No.");
+  //if user presses OK or Cancel button
   if ((splChar === null) || (splChar === "")) {
     return hasSpecialChars();
   }
+  //if user types in any other input
   else if ((splChar.toUpperCase() !== "YES") && (splChar.toUpperCase() !== "NO")) {
     return hasSpecialChars();
   }
@@ -99,6 +114,7 @@ function hasSpecialChars() {
 }
 
 function setPasswordProps() {
+  //sets properties on the passwordProps object based on user's input
   passwordProps = {};
 
   // WHEN prompted for the length of the password
@@ -121,6 +137,7 @@ function setPasswordProps() {
 }
 
 function checkPasswordProps() {
+  //user needs to select atleast one character type
   var allClear = true;
   if ((passwordProps["hasLowerCaseChar"] === "NO") && 
       (passwordProps["hasUpperCaseChar"] === "NO") && 
@@ -132,75 +149,81 @@ function checkPasswordProps() {
 }
 
 function setPasswordChars() {
-  var thePassword = '';
+  //set the first letter for the password
+  var firstPasswordChar = '';
   var passwordLengthRemaining = passwordProps["length"];
 
 
   if (passwordProps["hasLowerCaseChar"] === "YES") {
-    thePassword += generateValue(1, "LCASECHAR");
-    passwordLengthRemaining -= 1;
+    firstPasswordChar = generateValue("LCASECHAR");
+    
   }
 
   if (passwordProps["hasUpperCaseChar"] === "YES") {
-    thePassword += generateValue(1, "UCASECHAR");
-    passwordLengthRemaining -= 1;
+    firstPasswordChar = generateValue("UCASECHAR");
   }
 
   if (passwordProps["hasNumericValues"] === "YES") {
-    thePassword += generateValue(1, "NUMBER");
-    passwordLengthRemaining -= 1;
-
+    firstPasswordChar = generateValue("NUMBER");
   }
   
   if (passwordProps["hasSpecialChars"] === "YES") {
-    thePassword += generateValue(1, "SPECIALCHARS");
-    passwordLengthRemaining -= 1;
+    firstPasswordChar = generateValue("SPECIALCHARS");
   }
-   return [thePassword, passwordLengthRemaining];
 
+  return [firstPasswordChar, passwordLengthRemaining -1];
 }
 
 function setRemainingPasswordChars(length) {
+  //This function sets the rest of the password characters keeping into consideration user's settings
+  //on which char types to include/exclude
   var value = '';
-  for (var i=0; i<length; i++) {   
-    value += eval(myFunctions[Math.floor(Math.random() * myFunctions.length)]);
+  var tempValue = ''
+  for (var i=0; i<length; i++) {
+    //select a random function from myFunctions array and the eval function to execute the function 
+    //check if the value confirms to the user's input
+    //if not, then keep retrying
+    tempValue = eval(myFunctions[Math.floor(Math.random() * myFunctions.length)]);
+    if ((passwordProps["hasUpperCaseChar"] === "NO") && (characters.includes(tempValue))){
+        i--;
+    }
+    else if ((passwordProps["hasLowerCaseChar"] === "NO") && (characters.toLowerCase().includes(tempValue))){
+        i--;
+    }
+    else if ((passwordProps["hasNumericValues"] === "NO") && (numbers.toLowerCase().includes(tempValue))){
+        i--;
+    }
+    else if ((passwordProps["hasSpecialChars"] === "NO") && (specialChars.indexOf(tempValue)>-1)){
+        i--;
+    }
+    else {
+       value += tempValue;
+    }
   }
   return value;
 }
 
-
-
-
-function generateValue(length, type) {
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const numbers = "0123456789";
-  const specialChars = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "+", "[", "]", "~", "`", "{" , "}", "|", "\\", ":", ";", "'", "\"", "<", ",", ".", ">", "?", "\/"];
-
-    var result = "";
-    switch (type.toUpperCase()) {
-      case "UCASECHAR": case "LCASECHAR":  
-        const charactersLength = characters.length;
-        //for (var i = 0; i < length; i++) {
-          result = characters.charAt(Math.floor(Math.random() * charactersLength))
-       // }
-        if (type === "UCASECHAR") {
-          result = result.toUpperCase();
-        }
-        else {
-          result = result.toLowerCase();
-        }
-        break;
-      case "NUMBER":
-        const numberLength = numbers.length;
-      //  for (var i = 0; i < length; i++) {
-          result = numbers.charAt(Math.floor(Math.random() * numberLength));
-     //   }
-        break;
-      case "SPECIALCHARS":
+function generateValue(type) {
+  //return random value based on the 'type' parameter 
+  var result = "";
+  switch (type.toUpperCase()) {
+    case "UCASECHAR": case "LCASECHAR":  
+      const charactersLength = characters.length;
+      result = characters.charAt(Math.floor(Math.random() * charactersLength))
+      if (type === "UCASECHAR") {
+        result = result.toUpperCase();
+      }
+      else {
+        result = result.toLowerCase();
+      }
+      break;
+    case "NUMBER":
+      const numberLength = numbers.length;
+      result = numbers.charAt(Math.floor(Math.random() * numberLength));
+      break;
+    case "SPECIALCHARS":
         const splCharLength = specialChars.length;
-    //    for (var i = 0; i < length; i++) {
-          result = specialChars[Math.floor(Math.random() * splCharLength)];
-   //     }
+        result = specialChars[Math.floor(Math.random() * splCharLength)];
         break;
     }
     return result;
